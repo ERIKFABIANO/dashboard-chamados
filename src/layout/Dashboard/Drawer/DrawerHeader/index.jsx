@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 
 // project imports
 import DrawerHeaderStyled from './DrawerHeaderStyled';
-import Logo from 'components/logo';
+import codeappeLogo from 'assets/images/users/logo.png';
 
 // ==============================|| DRAWER HEADER ||============================== //
 
@@ -21,12 +21,15 @@ export default function DrawerHeader({ open }) {
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-        <Logo isIcon={!open} sx={{ width: open ? 'auto' : 35, height: 35 }} />
-        {open && (
-          <Typography variant="h6" sx={{ fontWeight: 600 }}>
-            Painel de Suporte
-          </Typography>
-        )}
+        {/* Logo CodeAppe sem hyperlink */}
+        <Box sx={{ width: open ? 170 : 40, height: open ? 50 : 40 }}>
+          <img
+            src={codeappeLogo}
+            alt="Logo"
+            style={{ height: '100%', width: 'auto', objectFit: 'contain', display: 'block' }}
+          />
+        </Box>
+        {/* Título removido conforme solicitado */}
       </Box>
     </DrawerHeaderStyled>
   );

@@ -1,7 +1,45 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const genAI = new GoogleGenerativeAI('AIzaSyBSjRQcvmgqA78rS9-V7LMaab3BXuHpZ2g');
-const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+// Prioriza o modelo gratuito e estável
+const DEFAULT_MODELS = ['gemini-1.5-flash-latest'];
+
+function getClient() {
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+  if (!apiKey) throw new Error('VITE_GEMINI_API_KEY não configurada.');
+  return new GoogleGenerativeAI(apiKey);
+}
+
+async function listAvailableModels() {
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+  const url = `https://generativelanguage.googleapis.com/v1/models?key=${encodeURIComponent(apiKey)}`;
+  const res = await fetch(url);
+  if (!res.ok) {
+    const txt = await res.text().catch(() => '');
+    throw new Error(`ListModels falhou: ${res.status} ${txt}`);
+  }
+  const data = await res.json();
+  return Array.isArray(data.models) ? data.models : [];
+}
+
+async function pickAvailableModel() {
+  try {
+    const models = await listAvailableModels();
+    const preferred = [
+      'gemini-1.5-flash-latest',
+      'gemini-1.5-flash',
+      'gemini-1.5-pro',
+      'gemini-pro'
+    ];
+    for (const name of preferred) {
+      const m = models.find((x) => x.name?.endsWith(name));
+      const supports = m?.supportedGenerationMethods || [];
+      if (m && supports.includes('generateContent')) return name;
+    }
+  } catch (_) {
+    // se a listagem falhar, usa default
+  }
+  return DEFAULT_MODELS[0];
+}
 
 export async function analyzeTicketsData(tickets) {
   try {
@@ -22,12 +60,35 @@ export async function analyzeTicketsData(tickets) {
     Responda em português, em formato bullet points, de forma concisa e objetiva.
     `;
 
+    const genAI = getClient();
+    const model = genAI.getGenerativeModel({ model: DEFAULT_MODELS[0] });
     const result = await model.generateContent(prompt);
     const response = await result.response;
     return response.text();
   } catch (error) {
     console.error('Erro na análise do Gemini:', error);
     return 'Não foi possível gerar a análise neste momento.';
+  }
+}
+
+export async function generateChatResponse(contextText, userQuestion) {
+  const genAI = getClient();
+  const modelName = await pickAvailableModel();
+  const model = genAI.getGenerativeModel({ model: modelName });
+  const prompt = `${contextText}\n\nPergunta do usuário: ${userQuestion}`;
+  try {
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = await response.text();
+    if (text) return text;
+    throw new Error('Resposta vazia do modelo.');
+  } catch (err) {
+    // Mensagem amigável para 404/not found ou método não suportado
+    const msg = String(err && err.message ? err.message : err);
+    if (/not found|NOT_FOUND|is not supported/i.test(msg)) {
+      throw new Error('Modelo indisponível para sua cota gratuita. Tente novamente mais tarde.');
+    }
+    throw err;
   }
 }
 

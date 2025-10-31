@@ -46,6 +46,7 @@ export async function getTicketsFromSheet(spreadsheetId, range, apiKey) {
     requester: t.Requester || t.Solicitante || t.requester || '',
     created_at: t['Created At'] || t['Data de abertura'] || t.created_at || '',
     updated_at: t['Updated At'] || t['Data de atualização'] || t.updated_at || '',
+    department: t.Department || t.Departamento || t.Setor || t.setor || t.departamento || '',
     raw: t // manter a linha original caso haja campos extras
   }));
 }

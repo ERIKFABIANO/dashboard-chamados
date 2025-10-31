@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="72" viewBox="0 0 240 72">
+  <defs>
+    <style>
+      .dark { fill: #0f1d2d; }
+      .blue { fill: #1fb6ff; }
+      .light { fill: #8bdcff; }
+    </style>
+  </defs>
+  <!-- Bracket/phone shape -->
+  <rect x="70" y="8" width="100" height="12" rx="6" class="light" />
+  <rect x="70" y="52" width="100" height="12" rx="6" class="light" />
+  <rect x="76" y="16" width="88" height="40" rx="8" fill="none" stroke="#1fb6ff" stroke-width="6" />
+
+  <!-- Text: CodeAppe -->
+  <g font-family="Segoe UI, Arial, sans-serif" font-size="32" font-weight="600">
+    <text x="0" y="46" class="dark">Code</text>
+    <text x="128" y="46" class="blue">Appe</text>
+  </g>
+</svg>

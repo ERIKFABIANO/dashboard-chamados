@@ -7,6 +7,7 @@ import DashboardLayout from 'layout/Dashboard';
 // support - overview and tickets
 const Overview = Loadable(lazy(() => import('pages/dashboard/Overview')));
 const Tickets = Loadable(lazy(() => import('pages/support/Tickets')));
+const AnaliseAI = Loadable(lazy(() => import('pages/dashboard/AnaliseAI')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -25,6 +26,10 @@ const MainRoutes = {
     {
       path: 'tickets',
       element: <Tickets />
+    },
+    {
+      path: 'analise-ai',
+      element: <AnaliseAI />
     }
   ]
 };

@@ -38,6 +38,7 @@ export default function Tickets() {
   const [filterStatus, setFilterStatus] = useState('');
   const [filterPriority, setFilterPriority] = useState('');
   const [filterAssignee, setFilterAssignee] = useState('');
+  const [filterDepartment, setFilterDepartment] = useState('');
   const [query, setQuery] = useState('');
   const [pageSize, setPageSize] = useState(10);
   const [selected, setSelected] = useState(null);
@@ -46,6 +47,12 @@ export default function Tickets() {
   const assigneeOptions = useMemo(() => {
     const s = new Set();
     tickets.forEach((t) => t.assignee && s.add(t.assignee));
+    return Array.from(s);
+  }, [tickets]);
+
+  const departmentOptions = useMemo(() => {
+    const s = new Set();
+    tickets.forEach((t) => t.department && s.add(t.department));
     return Array.from(s);
   }, [tickets]);
 
@@ -61,11 +68,16 @@ export default function Tickets() {
         requester: t.requester,
         created_at: t.created_at,
         updated_at: t.updated_at,
+        department: t.department,
+        tma: t.tma,
+        frt: t.frt,
+        satisfaction: t.satisfaction,
         raw: t.raw
       }))
       .filter((r) => (filterStatus ? r.status === filterStatus : true))
       .filter((r) => (filterPriority ? r.priority === filterPriority : true))
       .filter((r) => (filterAssignee ? r.assignee === filterAssignee : true))
+      .filter((r) => (filterDepartment ? r.department === filterDepartment : true))
       .filter((r) => {
         if (!query) return true;
         const q = query.toLowerCase();
@@ -87,7 +99,11 @@ export default function Tickets() {
     'Responsável',
     'Solicitante',
     'Data de abertura',
-    'Data de atualização'
+    'Data de atualização',
+    'Departamento',
+    'TMA (min)',
+    'FRT (min)',
+    'Satisfação do Cliente'
   ];
 
   const handleChangePage = (event, newPage) => {
@@ -136,6 +152,17 @@ export default function Tickets() {
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
+          <TextField select label="Departamento" fullWidth value={filterDepartment} onChange={(e) => setFilterDepartment(e.target.value)}>
+            <MenuItem value="">Todos</MenuItem>
+            {departmentOptions.map((d) => (
+              <MenuItem key={d} value={d}>
+                {d}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={3}>
           <TextField label="Buscar" fullWidth value={query} onChange={(e) => setQuery(e.target.value)} />
         </Grid>
 
@@ -175,6 +202,10 @@ export default function Tickets() {
                 <TableCell>{row.requester}</TableCell>
                 <TableCell>{row.created_at}</TableCell>
                 <TableCell>{row.updated_at}</TableCell>
+                <TableCell>{row.department}</TableCell>
+                <TableCell>{row.tma}</TableCell>
+                <TableCell>{row.frt}</TableCell>
+                <TableCell>{row.satisfaction}</TableCell>
               </TableRow>
             ))}
           </TableBody>

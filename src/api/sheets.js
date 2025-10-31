@@ -22,17 +22,35 @@ export const transformSheetData = (rawData) => {
   // If no data, return empty array
   if (!rawData || rawData.length === 0) return [];
 
-  // Transform each row into an object with proper keys
-  return rawData.map(row => ({
+  // Mapear colunas do Sheets para os campos exibidos na página de "Chamados"
+  // Ordem esperada na planilha (A2:M), conforme cabeçalho enviado:
+  // A: ID do Chamado
+  // B: Data de Abertura
+  // C: Data de Fechamento
+  // D: Status
+  // E: Prioridade
+  // F: Motivo
+  // G: Solução
+  // H: Solicitante
+  // I: Agente Responsável
+  // J: Departamento
+  // K: TMA (minutos)
+  // L: FRT (minutos)
+  // M: Satisfação do Cliente
+  return rawData.map((row) => ({
     id: row[0] || '',
-    status: row[1] || '',
-    priority: row[2] || '',
-    category: row[3] || '',
-    subject: row[4] || '',
-    assignedTo: row[5] || '',
-    requestedBy: row[6] || '',
-    createdDate: row[7] || '',
-    updatedDate: row[8] || ''
+    created_at: row[1] || '',
+    updated_at: row[2] || '',
+    status: row[3] || '',
+    priority: row[4] || '',
+    title: row[5] || '', // Motivo como "Título"
+    description: row[6] || '', // Solução como "Descrição"
+    requester: row[7] || '',
+    assignee: row[8] || '',
+    department: row[9] || '',
+    tma: row[10] || '',
+    frt: row[11] || '',
+    satisfaction: row[12] || ''
   }));
 };
 

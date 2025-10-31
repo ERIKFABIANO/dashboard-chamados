@@ -18,7 +18,7 @@ export default function TicketsProvider({ children }) {
 
   // Config defaults: o usuário pode sobrescrever via variáveis de ambiente ou edição local em config
   const SPREADSHEET_ID = import.meta.env.VITE_SHEETS_SPREADSHEET_ID || '1e4Cs0v7ZTeQpT3fVaIHYyPsxto5ZL_9rT4M_2gosZXA';
-  const RANGE = import.meta.env.VITE_SHEETS_RANGE || 'A2:I';
+  const RANGE = import.meta.env.VITE_SHEETS_RANGE || 'A2:M';
   const API_KEY = import.meta.env.VITE_SHEETS_API_KEY || 'AIzaSyBSjRQcvmgqA78rS9-V7LMaab3BXuHpZ2g';
 
   async function refreshTickets() {

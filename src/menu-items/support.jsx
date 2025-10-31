@@ -1,17 +1,18 @@
 // assets
-import { ChromeOutlined, QuestionOutlined } from '@ant-design/icons';
+import { ChromeOutlined, QuestionOutlined, RobotOutlined } from '@ant-design/icons';
 
 // icons
 const icons = {
   ChromeOutlined,
-  QuestionOutlined
+  QuestionOutlined,
+  RobotOutlined
 };
 
 // ==============================|| MENU ITEMS - SUPPORT DASHBOARD ||============================== //
 
 const support = {
   id: 'support',
-  title: 'Painel de Suporte',
+  title: '',
   type: 'group',
   children: [
     {
@@ -27,6 +28,13 @@ const support = {
       type: 'item',
       url: '/tickets',
       icon: icons.QuestionOutlined
+    },
+    {
+      id: 'analise-ai',
+      title: 'AnaliseAI',
+      type: 'item',
+      url: '/analise-ai',
+      icon: icons.RobotOutlined
     }
   ]
 };

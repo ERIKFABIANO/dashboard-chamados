@@ -17,9 +17,9 @@ import { LineChart, PieChart } from '@mui/x-charts';
 
 function StatCard({ title, value, color }) {
   return (
-    <Card sx={{ borderLeft: `6px solid ${color}`, width: '100%' }}>
-      <CardContent>
-        <Typography variant="subtitle2" color="textSecondary">
+    <Card sx={{ borderLeft: `6px solid ${color}`, width: '100%', minHeight: 110 }}>
+      <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, py: 1.5 }}>
+        <Typography variant="subtitle2" color="text.secondary">
           {title}
         </Typography>
         <Typography variant="h4">{value}</Typography>
@@ -138,8 +138,8 @@ export default function Overview() {
 
 
   return (
-    <Box sx={{ mx: 0, px: 0 }}>
-    <Grid container spacing={3}>
+    <Box sx={{ mx: 0, px: 2 }}>
+    <Grid container spacing={3} alignItems="flex-start">
       <Grid item xs={12} sm={6} md={3}>
         <StatCard title="Total de chamados" value={stats.total} color="#3f51b5" />
       </Grid>
@@ -173,6 +173,7 @@ export default function Overview() {
           </CardContent>
         </Card>
       </Grid>
+
       <Grid item xs={12} md={6}>
         <Card>
           <CardContent>
@@ -203,7 +204,7 @@ export default function Overview() {
 
       {/* Tabela de abertos no final em full-width, ocupando a tela */}
       <Grid item xs={12}>
-        <Card>
+        <Card sx={{ overflowX: 'auto' }}>
           <CardContent>
             <Typography variant="h6">Chamados abertos</Typography>
             <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
